@@ -1,11 +1,11 @@
 #include <stdlib.h>
-#include <stdio.h>
 
 #include "fiddle.h"
+#include "fiddle/log.h"
 #include "fiddle/lua.h"
 
 void print_usage(int argc, const char *argv[]) {
-  fprintf(stderr, "USAGE: %s <script>\n", argv[0]);
+  PRINT("USAGE: %s <script>\n", argv[0]);
 }
 
 int main(int argc, const char *argv[]) {
