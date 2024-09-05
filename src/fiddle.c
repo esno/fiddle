@@ -15,7 +15,7 @@ int main(int argc, const char *argv[]) {
   }
 
   const char *script = argv[1];
-  lua_State *L = fdl_lua_new();
+  lua_State *L = fdl_lua_new(argc, argv);
   int rc = EXIT_SUCCESS;
   if (fdl_lua_dofile(L, script) == FDL_NOK)
     rc = EXIT_FAILURE;

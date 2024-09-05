@@ -21,6 +21,17 @@ static int _pcall(lua_State *L, int larg, int lret) {
   return FDL_OK;
 }
 
+static void _push_args(lua_State *L, int argc, const char *argv[]) {
+  lua_newtable(L); {
+    for (int i = 1; i <= argc; ++i) {
+      lua_pushnumber(L, i);
+      lua_pushstring(L, argv[i]);
+      lua_rawset(L, -3);
+    }
+    lua_setglobal(L, "arg");
+  }
+}
+
 int fdl_lua_dofile(lua_State *L, const char *script) {
   if (luaL_loadfile(L, script) != LUA_OK) {
     ERROR(lua_tostring(L, -1));
@@ -30,7 +41,7 @@ int fdl_lua_dofile(lua_State *L, const char *script) {
   return _pcall(L, 0, LUA_MULTRET);
 }
 
-lua_State *fdl_lua_new(void) {
+lua_State *fdl_lua_new(int argc, const char *argv[]) {
   lua_State *L = luaL_newstate();
   luaL_openlibs(L);
   fdl_log_luaopen(L);
@@ -41,6 +52,8 @@ lua_State *fdl_lua_new(void) {
     lua_pushstring(L, FDL_PATH);
     lua_setfield(L, -2, "path");
   }
+
+  _push_args(L, argc, argv);
 
   return L;
 }
