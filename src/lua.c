@@ -3,7 +3,7 @@
 #include <lualib.h>
 
 #include "fiddle.h"
-#include "fiddle/log.h"
+#include "fiddle/lua.h"
 
 #ifndef FDL_CPATH
 #define FDL_CPATH "/usr/local/lib/fiddle/?.so"
@@ -14,7 +14,7 @@
 
 static int _pcall(lua_State *L, int larg, int lret) {
   if (lua_pcall(L, larg, lret, 0) != LUA_OK) {
-    ERROR(lua_tostring(L, -1));
+    lerror();
     return FDL_NOK;
   }
 
