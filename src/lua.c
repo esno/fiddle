@@ -45,6 +45,8 @@ lua_State *fdl_lua_new(int argc, const char *argv[]) {
   lua_State *L = luaL_newstate();
   luaL_openlibs(L);
   fdl_log_luaopen(L);
+  fdl_posix_luaopen(L);
+  fdl_libc_luaopen(L);
 
   lua_getglobal(L, "package"); {
     lua_pushstring(L, FDL_CPATH);

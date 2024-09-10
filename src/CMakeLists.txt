@@ -1,5 +1,7 @@
 set(FIDDLE_SRC
   bindings/log.c
+  bindings/posix.c
+  bindings/libc.c
   log.c
   lua.c
   ${CMAKE_PROJECT_NAME}.c)
@@ -8,6 +10,7 @@ add_executable(${CMAKE_PROJECT_NAME} ${FIDDLE_SRC})
 target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC FDL_LOG_JOURNALD=${WITH_JOURNALD})
 target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC -DFDL_CPATH="$<JOIN:${FDL_CPATH},\\$<SEMICOLON>>")
 target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC -DFDL_PATH="$<JOIN:${FDL_PATH},\\$<SEMICOLON>>")
+target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC -D_GNU_SOURCE)
 target_link_libraries(${CMAKE_PROJECT_NAME}
   ${LUA_LIBRARIES}
   ${CMAKE_THREAD_LIBS_INIT})
