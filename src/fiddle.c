@@ -4,11 +4,16 @@
 #include "fiddle/log.h"
 #include "fiddle/lua.h"
 
+int _argc;
+const char **_argv;
+
 void print_usage(int argc, const char *argv[]) {
   PRINT("USAGE: %s <script>\n", argv[0]);
 }
 
 int main(int argc, const char *argv[]) {
+  _argc = argc;
+  _argv = argv;
   if (argc < 2) {
     print_usage(argc, argv);
     return EXIT_FAILURE;

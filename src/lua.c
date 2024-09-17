@@ -12,15 +12,6 @@
 #define FDL_PATH "/usr/local/share/fiddle/lua/?.lua;/usr/local/share/fiddle/lua/?/init.lua"
 #endif
 
-static int _pcall(lua_State *L, int larg, int lret) {
-  if (lua_pcall(L, larg, lret, 0) != LUA_OK) {
-    lerror();
-    return FDL_NOK;
-  }
-
-  return FDL_OK;
-}
-
 static void _push_args(lua_State *L, int argc, const char *argv[]) {
   lua_newtable(L); {
     for (int i = 1; i <= argc; ++i) {
@@ -34,11 +25,11 @@ static void _push_args(lua_State *L, int argc, const char *argv[]) {
 
 int fdl_lua_dofile(lua_State *L, const char *script) {
   if (luaL_loadfile(L, script) != LUA_OK) {
-    ERROR(lua_tostring(L, -1));
+    lerror();
     return FDL_NOK;
   }
 
-  return _pcall(L, 0, LUA_MULTRET);
+  return fdl_lua_pcall(L, 0, LUA_MULTRET);
 }
 
 lua_State *fdl_lua_new(int argc, const char *argv[]) {
@@ -58,6 +49,15 @@ lua_State *fdl_lua_new(int argc, const char *argv[]) {
   _push_args(L, argc, argv);
 
   return L;
+}
+
+int fdl_lua_pcall(lua_State *L, int larg, int lret) {
+  if (lua_pcall(L, larg, lret, 0) != LUA_OK) {
+    lerror();
+    return FDL_NOK;
+  }
+
+  return FDL_OK;
 }
 
 void fdl_lua_register_global(lua_State *L, luaL_Reg *lfuncs) {

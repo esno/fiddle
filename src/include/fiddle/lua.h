@@ -8,6 +8,7 @@
 
 int fdl_lua_dofile(lua_State *L, const char *script);
 lua_State *fdl_lua_new(int argc, const char *argv[]);
+int fdl_lua_pcall(lua_State *L, int larg, int lret);
 void fdl_lua_register_global(lua_State *L, luaL_Reg *lfuncs);
 
 void fdl_libc_luaopen(lua_State *L);
