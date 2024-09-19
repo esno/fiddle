@@ -15,23 +15,39 @@ typedef struct fdl_threads fdl_threads;
 struct fdl_threads {
   pthread_t tid;
   lua_State *L;
+  int pipefd[2];
   const char *routine;
 };
 
+//-- routine(arg1?, arg2?)
 static void *_pthread_routine(void *arg) {
   fdl_threads *p = (fdl_threads *) arg;
   fdl_lua_dofile(p->L, _argv[1]);
   lua_getglobal(p->L, p->routine);
-  fdl_lua_pcall(p->L, 0, 0);
+  int c = 0;
+  if (p->pipefd[0] != -1) {
+    lua_pushinteger(p->L, p->pipefd[0]);
+    c += 1;
+  }
+  if (p->pipefd[1] != -1) {
+    lua_pushinteger(p->L, p->pipefd[1]);
+    c += 1;
+  }
+  fdl_lua_pcall(p->L, c, 0);
 
   pthread_exit(NULL);
 }
 
-//-- pthread = pthread_create(routine)
+//-- pthread = pthread_create(routine, arg1? arg2?)
 static int _fdl_pthread_create(lua_State *L) {
   const char *routine = luaL_checkstring(L, 1);
+  int arg1 = (lua_isinteger(L, 2) == LUA_OK) ? luaL_checkinteger(L, 2) : -1;
+  int arg2 = (lua_isinteger(L, 3) == LUA_OK) ? luaL_checkinteger(L, 3) : -1;
+
   fdl_threads *udata = (fdl_threads *) lua_newuserdata(L, sizeof(fdl_threads));
   udata->L = fdl_lua_new(_argc, _argv);
+  udata->pipefd[0] = arg1;
+  udata->pipefd[1] = arg2;
   udata->routine = routine;
 
   int rc = pthread_create(&udata->tid, NULL, &_pthread_routine, udata);
