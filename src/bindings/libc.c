@@ -9,6 +9,20 @@
 
 static int _fdl_fclose(lua_State *L);
 
+//-- bool, errno, strerrno = close(fd)
+static int _fdl_close(lua_State *L) {
+  int fd = luaL_checkinteger(L, 1);
+  if (close(fd) == -1) {
+    lua_pushnil(L);
+    lua_pushinteger(L, errno);
+    lua_pushstring(L, (const char *) strerrorname_np(errno));
+    return 3;
+  }
+
+  lua_pushboolean(L, 1);
+  return 1;
+}
+
 //-- fd, errno, strerrno = dup2(oldfd, newfd)
 static int _fdl_dup2(lua_State *L) {
   int oldfd = luaL_checkinteger(L, 1);
@@ -48,7 +62,7 @@ static int _fdl_execvp(lua_State *L) {
   return 1;
 }
 
-//-- bool, errno, strerrno = close(stream)
+//-- bool, errno, strerrno = fclose(stream)
 static int _fdl_fclose(lua_State *L) {
   luaL_Stream *udata = (luaL_Stream *) luaL_checkudata(L, 1, LUA_FILEHANDLE);
   if (fclose(udata->f) == -1) {
@@ -131,6 +145,7 @@ static int _fdl_pipe(lua_State *L) {
 
 void fdl_libc_luaopen(lua_State *L) {
   struct luaL_Reg lfuncs[] = {
+    { "close", _fdl_close },
     { "dup2", _fdl_dup2 },
     { "execvp", _fdl_execvp },
     { "fclose", _fdl_fclose },
