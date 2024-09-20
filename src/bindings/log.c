@@ -31,14 +31,14 @@ static int _log_setloglvl(lua_State *L) {
 
 void fdl_log_luaopen(lua_State *L) {
 	struct luaL_Reg lfuncs[] = {
-		{ "alert", _log_ALERT },
-		{ "crit", _log_CRIT },
-		{ "debug", _log_DEBUG },
-		{ "emerg", _log_EMERG },
-		{ "error", _log_ERROR },
-		{ "info", _log_INFO },
-		{ "notice", _log_NOTICE },
-		{ "warn", _log_WARN },
+		{ "_alert", _log_ALERT },
+		{ "_crit", _log_CRIT },
+		{ "_debug", _log_DEBUG },
+		{ "_emerg", _log_EMERG },
+		{ "_error", _log_ERROR },
+		{ "_info", _log_INFO },
+		{ "_notice", _log_NOTICE },
+		{ "_warn", _log_WARN },
 
 		{ "print", _log_PRINT },
 		{ "setloglvl", _log_setloglvl },
