@@ -3,6 +3,7 @@ set(FIDDLE_SRC
   bindings/posix.c
   bindings/libc.c
   log.c
+  stdio.c
   lua.c
   ${CMAKE_PROJECT_NAME}.c)
 
