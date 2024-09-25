@@ -10,5 +10,6 @@ enum fdl_rcs {
 };
 
 void fdl_stdio_luaopen(lua_State *L);
+void fdl_unistd_luaopen(lua_State *L);
 
 #endif

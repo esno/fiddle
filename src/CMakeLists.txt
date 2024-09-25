@@ -4,6 +4,7 @@ set(FIDDLE_SRC
   bindings/libc.c
   log.c
   stdio.c
+  unistd.c
   lua.c
   ${CMAKE_PROJECT_NAME}.c)
 
