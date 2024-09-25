@@ -13,7 +13,7 @@ static int fdl_noop(lua_State *L) { return 0; };
 static int fdl_fprintf(lua_State *L) {
   luaL_Stream *udata = (luaL_Stream *) luaL_checkudata(L, 1, LUA_FILEHANDLE);
   const char *msg = luaL_checkstring(L, 2);
-  int bytes = fprintf(udata->f, msg);
+  int bytes = fprintf(udata->f, "%s", msg);
 
   if (bytes < 0) {
     lua_pushnil(L);
