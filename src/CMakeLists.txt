@@ -3,6 +3,7 @@ set(FIDDLE_SRC
   bindings/posix.c
   bindings/libc.c
   log.c
+  ftw.c
   stdio.c
   unistd.c
   lua.c

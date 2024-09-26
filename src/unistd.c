@@ -7,7 +7,7 @@
 
 #include "fiddle/lua.h"
 
-//-- bytes, errno, strerrno = fprintf(stream, msg)
+//-- rc, errno, strerrno = chdir(path)
 static int fdl_chdir(lua_State *L) {
   const char *path = luaL_checkstring(L, 1);
 

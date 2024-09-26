@@ -26,9 +26,25 @@ static int fdl_fprintf(lua_State *L) {
   return 1;
 }
 
+//-- rc, errno, strerrno = remove(pathname)
+static int fdl_remove(lua_State *L) {
+  const char *pathname = luaL_checkstring(L, 1);
+
+  if (remove(pathname) == -1) {
+    lua_pushnil(L);
+    lua_pushinteger(L, errno);
+    lua_pushstring(L, (const char *) strerrorname_np(errno));
+    return 3;
+  }
+
+  lua_pushboolean(L, 1);
+  return 1;
+}
+
 void fdl_stdio_luaopen(lua_State *L) {
   struct luaL_Reg lfuncs[] = {
     { "fprintf", fdl_fprintf },
+    { "remove", fdl_remove },
     { NULL, NULL }
   };
 

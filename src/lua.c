@@ -38,6 +38,7 @@ lua_State *fdl_lua_new(int argc, const char *argv[]) {
   fdl_log_luaopen(L);
   fdl_posix_luaopen(L);
   fdl_libc_luaopen(L);
+  fdl_ftw_luaopen(L);
   fdl_stdio_luaopen(L);
   fdl_unistd_luaopen(L);
 
